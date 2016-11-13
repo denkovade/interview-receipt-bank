@@ -1,7 +1,87 @@
 #1. install OS - select OS (CentOS CentOS-7-x86_64-Minimal-1511 )
-#2. install git 
-#3. install docker
-#4. install discourse
-#5. install gitlab
+First I selected virtual machine for testing. I'm using Virtual box 5.1.8. I made VM with minimal instalation  RAM 512 MB CPU 1 HDD 8GB. I made minimal instalation with CentOS 7. Created only root account with weak password.
+Aftre that I checked official documentation on web about Discourse (https://www.discourse.org/) Gitlab (https://about.gitlab.com/) Docker (https://www.docker.com/) and Ansible (https://www.ansible.com/). I read instalation instruction and fill it in this simple plan.
 
+
+#2. install git  - https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
+#yum install git-all
+
+#3. install docker - https://docs.docker.com/engine/installation/linux/centos/
+yum update
+
+tee /etc/yum.repos.d/docker.repo <<-'EOF'
+#[dockerrepo]
+#name=Docker Repository
+#baseurl=https://yum.dockerproject.org/repo/main/centos/7/
+#enabled=1
+#gpgcheck=1
+#gpgkey=https://yum.dockerproject.org/gpg
+#EOF
+
+yum install docker-engine
+systemctl enable docker.service
+systemctl start docker
+
+#verify instalation
+docker run --rm hello-world
+
+
+
+
+
+
+#4. install discourse - https://github.com/discourse/discourse/blob/master/docs/INSTALL-cloud.md
+#https://github.com/discourse/discourse/blob/master/docs/INSTALL.md
+
+#This command installs the latest versions of Docker and Git on your server. Alternately, you can manually install Git #and the Docker package for your OS.
+wget -qO- https://get.docker.com/ | sh
+#install discourse - Create a /var/discourse folder, clone the Official Discourse Docker Image into it:
+mkdir /var/discourse
+git clone https://github.com/discourse/discourse_docker.git /var/discourse
+cd /var/discourse
+#edit discourse configuration
+./discourse-setup
+
+####
+Answer the following questions when prompted:
+
+#Hostname for your Discourse? [discourse.receiptbank.com]: 
+#Email address for admin account? [me@receiptbank.com]: 
+#SMTP server address? [smtp.receiptbank.com]: 
+#SMTP user name? [postmaster@discourse.receiptbank.com]: 
+#SMTP port [587]:
+#SMTP password? []: 
+###
+
+#5. install gitlab - https://about.gitlab.com/downloads/#centos7
+
+# Install and configure the necessary dependencies
+yum install curl policycoreutils openssh-server openssh-clients
+systemctl enable sshd
+systemctl start sshd
+yum install postfix
+systemctl enable postfix
+systemctl start postfix
+firewall-cmd --permanent --add-service=http
+systemctl reload firewalld
+
+#Add the GitLab package server and install the package
+curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | sudo bash
+yum install gitlab-ce
+
+#Configure and start GitLab
+gitlab-ctl reconfigure
+
+####configure 443
+vim /etc/gitlab/gitlab.rb
+#in file above add folowing raw
+# note the 'https' below
+external_url "https://gitlab.receiptbank.com" 
+#this will search certificates
+mkdir -p /etc/gitlab/ssl
+chmod 700 /etc/gitlab/ssl
+cp gitlab.receiptbank.com.key gitlab.receiptbank.com.crt /etc/gitlab/ssl/
+
+###after changes above run following command
+gitlab-ctl reconfigure
 
