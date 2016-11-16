@@ -5,15 +5,15 @@
 
 DevOps Engineer - technical interview
 
-Testing goals
+Testing goals:
 
 With this test, we want to see your ability to create an entire infrastructure from scratch as well as your skills as a system administrator.
 
-The task
+The task:
 
 Your task is to provision a highly available /Gitlab/Discourse/Rails CMS of your choice/. The entry point of the cluster should be a host and port 443.
 
-The solution
+The solution:
 
 In your solution please emphasize on readability, maintainability and DevOps methodologies. We expect a clear way to recreate your setup.
 
