@@ -1,0 +1,18 @@
+#basic plan for ubuntu
+#1.install os
+#2.install docker
+#3.install discource
+
+
+###########
+#4.install gitlab
+#Install and configure the necessary dependencies
+sudo apt-get install curl openssh-server ca-certificates postfix
+
+#Add the GitLab package server and install the package
+curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
+sudo apt-get install gitlab-ce
+
+
+#Configure and start GitLab
+sudo gitlab-ctl reconfigure

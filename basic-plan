@@ -1,10 +1,12 @@
+#####
 #1. install OS - select OS (CentOS CentOS-7-x86_64-Minimal-1511 )
 First I selected virtual machine for testing. I'm using Virtual box 5.1.8. I made VM with minimal instalation  RAM 512 MB CPU 1 HDD 8GB. I made minimal instalation with CentOS 7. Created only root account with weak password.
 Aftre that I checked official documentation on web about Discourse (https://www.discourse.org/) Gitlab (https://about.gitlab.com/) Docker (https://www.docker.com/) and Ansible (https://www.ansible.com/). I read instalation instruction and fill it in this simple plan.
 
-
+#####
 #2. install git  - https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
 #yum install git-all
+#####
 
 #3. install docker - https://docs.docker.com/engine/installation/linux/centos/
 yum update
@@ -29,7 +31,7 @@ docker run --rm hello-world
 
 
 
-
+#####
 #4. install discourse - https://github.com/discourse/discourse/blob/master/docs/INSTALL-cloud.md
 #https://github.com/discourse/discourse/blob/master/docs/INSTALL.md
 
@@ -53,6 +55,10 @@ Answer the following questions when prompted:
 #SMTP password? []: 
 ###
 
+#####ssl setup
+###https://meta.discourse.org/t/allowing-ssl-https-for-your-discourse-docker-setup/13847
+
+######
 #5. install gitlab - https://about.gitlab.com/downloads/#centos7
 
 # Install and configure the necessary dependencies
@@ -82,6 +88,14 @@ mkdir -p /etc/gitlab/ssl
 chmod 700 /etc/gitlab/ssl
 cp gitlab.receiptbank.com.key gitlab.receiptbank.com.crt /etc/gitlab/ssl/
 
+
+
+openssl rsa -in privkey.pem -out new.cert.key
+openssl x509 -in new.cert.csr -out new.cert.cert -req -signkey new.cert.key -days 365
+cp new.cert.cert /etc/ssl/certs/gitlab.crt
+cp new.cert.key /etc/ssl/private/gitlab.key
+
 ###after changes above run following command
 gitlab-ctl reconfigure
 
+######

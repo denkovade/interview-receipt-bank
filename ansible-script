@@ -1,0 +1,18 @@
+#Ansible script about this task
+# install os
+#install packages - yum install ansible nginx vim git
+
+##servers - hosts
+[servers]
+gitlab
+discourse
+
+[dbservers]
+dbserver
+
+###playbook
+ name: install packages for gitlab 
+ yum: curl policycoreutils openssh-server openssh-clients postfix gitlab-ce
+
+
+ 
