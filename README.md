@@ -1,6 +1,6 @@
-# interview-receipt-bank
-#this repo is for technical interview about DevOps Sysadmin in receipt bank
-#you can read task below
+ interview-receipt-bank
+this repo is for technical interview about DevOps Sysadmin in receipt bank
+you can read task below
 
 
 DevOps Engineer - technical interview
